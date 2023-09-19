@@ -4,6 +4,15 @@ public class ATMInformation {
     private double balance;
     private double depositAmount;
     private double withdrawAmount;
+    private double transferAmount;
+
+    public double getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(double transferAmount) {
+        this.transferAmount = transferAmount;
+    }
 
     public double getBalance() {
         return balance;

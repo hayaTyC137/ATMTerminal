@@ -6,12 +6,18 @@ import java.util.Scanner;
 public class ATMOperations implements ATMOperationsInterface{
     ATMInformation atm = new ATMInformation();
     static ATMOperationsInterface op = new ATMOperations();
-    private double balance;
-    private double depositAmount;
-    private double withdrawAmount;
-    private double transferAmount;
     private int countOfDeposit;
     private int countOfWithdraw;
+
+    public double getTotalAmountDeposit() {
+        return totalAmountDeposit;
+    }
+
+    public void setTotalAmountDeposit(double totalAmountDeposit) {
+        this.totalAmountDeposit = totalAmountDeposit;
+    }
+
+    private double totalAmountDeposit;
 
     public int getCountOfDeposit() {
         return countOfDeposit;
@@ -38,14 +44,6 @@ public class ATMOperations implements ATMOperationsInterface{
     }
 
     private int countOfTransfer;
-
-    public double getTransferAmount() {
-        return transferAmount;
-    }
-
-    public void setTransferAmount(double transferAmount) {
-        this.transferAmount = transferAmount;
-    }
 
     static void displayMenu() {
         System.out.println("1. Show balance\n" +
@@ -106,8 +104,10 @@ public class ATMOperations implements ATMOperationsInterface{
         switch (chooseOfOperationOfHistory){
             case 1:
                 System.out.println("Count of deposits equals "+ getCountOfDeposit());
-
+                System.out.println("The sum of all replenishments equals "+ getTotalAmountDeposit());
                 break;
+            case 2:
+                // ДОРАБОТАТЬ ИСТОРИЮ ВЫВОДА СРЕДСТВ
         }
 
     }
@@ -124,28 +124,28 @@ public class ATMOperations implements ATMOperationsInterface{
         switch (chooseOfOperationWithMoney){
             case 1: // deposit operation
                 System.out.println("Write the amount to deposit: ");
-                depositAmount = scanner.nextDouble();
-                System.out.println(depositAmount + " Deposited successfully !!");
-                atm.setBalance(atm.getBalance()+ depositAmount);
+                atm.setDepositAmount(scanner.nextDouble());
+                System.out.println(atm.getDepositAmount() + " Deposited successfully !!");
+                atm.setBalance(atm.getBalance()+ atm.getDepositAmount());
                 countOfDeposit++;
-
-
+                totalAmountDeposit += atm.getDepositAmount();
                 break;
             case 2: // withdraw operation
                 System.out.println("Write the amount to withdraw: ");
-                withdrawAmount = scanner.nextDouble();
-                System.out.println(withdrawAmount + " Withdraw successfully !!");
-                atm.setBalance(atm.getBalance() - withdrawAmount);
+                atm.setWithdrawAmount(scanner.nextDouble());
+                System.out.println(atm.getWithdrawAmount() + " Withdraw successfully !!");
+                atm.setBalance(atm.getBalance() - atm.getWithdrawAmount());
                 break;
             case 3: //transfer operation
                 System.out.println("Write the amount to transfer: ");
-                transferAmount = scanner.nextDouble();
+                atm.setTransferAmount(scanner.nextDouble());
                 System.out.println("Write the phone number to who you want to transfer money");
                 String numberPhone = scanner.next();
-                System.out.println(transferAmount + " Transfer successful on "+ numberPhone);
-                atm.setBalance(atm.getBalance() - transferAmount);
+                System.out.println(atm.getTransferAmount() + " Transfer successful on "+ numberPhone);
+                atm.setBalance(atm.getBalance() - atm.getTransferAmount());
             case 4:
                 // ничего не прописывается поскольку у нас цикл while
+                break;
         }
     }
 
