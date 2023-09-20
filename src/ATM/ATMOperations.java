@@ -8,6 +8,7 @@ public class ATMOperations implements ATMOperationsInterface{
     static ATMOperationsInterface op = new ATMOperations();
     private int countOfDeposit;
     private int countOfWithdraw;
+    private int countOfTransfer;
 
     public double getTotalAmountDeposit() {
         return totalAmountDeposit;
@@ -18,32 +19,40 @@ public class ATMOperations implements ATMOperationsInterface{
     }
 
     private double totalAmountDeposit;
+    private double totalAmountWithdraw;
+    private double totalAmountTransfer;
+
+    public double getTotalAmountTransfer() {
+        return totalAmountTransfer;
+    }
+
+    public void setTotalAmountTransfer(double totalAmountTransfer) {
+        this.totalAmountTransfer = totalAmountTransfer;
+    }
+
+    public double getTotalAmountWithdraw() {
+        return totalAmountWithdraw;
+    }
+
+    public void setTotalAmountWithdraw(double totalAmountWithdraw) {
+        this.totalAmountWithdraw = totalAmountWithdraw;
+    }
 
     public int getCountOfDeposit() {
         return countOfDeposit;
     }
 
-    public void setCountOfDeposit(int countOfDeposit) {
-        this.countOfDeposit = countOfDeposit;
-    }
 
     public int getCountOfWithdraw() {
         return countOfWithdraw;
     }
 
-    public void setCountOfWithdraw(int countOfWithdraw) {
-        this.countOfWithdraw = countOfWithdraw;
-    }
 
     public int getCountOfTransfer() {
         return countOfTransfer;
     }
 
-    public void setCountOfTransfer(int countOfTransfer) {
-        this.countOfTransfer = countOfTransfer;
-    }
 
-    private int countOfTransfer;
 
     static void displayMenu() {
         System.out.println("1. Show balance\n" +
@@ -82,15 +91,17 @@ public class ATMOperations implements ATMOperationsInterface{
                     break;
                 case 3:
                     op.showRecentTransactions();
+                    break;
                 case 4:
                     op.exit();
+                    break;
             }
         }
     }
 
     @Override
     public void viewBalance() {
-        System.out.println("Your balance is "+atm.getBalance());
+        System.out.println("Your balance is "+atm.getBalance() +" $");
     }
 
     @Override
@@ -104,10 +115,16 @@ public class ATMOperations implements ATMOperationsInterface{
         switch (chooseOfOperationOfHistory){
             case 1:
                 System.out.println("Count of deposits equals "+ getCountOfDeposit());
-                System.out.println("The sum of all replenishments equals "+ getTotalAmountDeposit());
+                System.out.println("The sum of all replenishments equals "+ getTotalAmountDeposit()+"$");
                 break;
             case 2:
-                // ДОРАБОТАТЬ ИСТОРИЮ ВЫВОДА СРЕДСТВ
+                System.out.println("Count of withdraw equals "+ getCountOfWithdraw());
+                System.out.println("The sum of all withdraw equals "+getTotalAmountWithdraw()+"$");
+                break;
+            case 3:
+                System.out.println("Count of transfer equals "+getCountOfTransfer());
+                System.out.println("The sum of all transfers equals "+getTotalAmountTransfer()+"$");
+                break;
         }
 
     }
@@ -125,24 +142,32 @@ public class ATMOperations implements ATMOperationsInterface{
             case 1: // deposit operation
                 System.out.println("Write the amount to deposit: ");
                 atm.setDepositAmount(scanner.nextDouble());
-                System.out.println(atm.getDepositAmount() + " Deposited successfully !!");
+                System.out.println(atm.getDepositAmount()+" $" + " Deposited successfully !!");
                 atm.setBalance(atm.getBalance()+ atm.getDepositAmount());
                 countOfDeposit++;
-                totalAmountDeposit += atm.getDepositAmount();
+                //totalAmountDeposit += atm.getDepositAmount();
+                setTotalAmountDeposit(getTotalAmountDeposit()+ atm.getDepositAmount());
                 break;
             case 2: // withdraw operation
                 System.out.println("Write the amount to withdraw: ");
                 atm.setWithdrawAmount(scanner.nextDouble());
-                System.out.println(atm.getWithdrawAmount() + " Withdraw successfully !!");
+                System.out.println(atm.getWithdrawAmount() + "$"+ " Withdraw successfully !!");
                 atm.setBalance(atm.getBalance() - atm.getWithdrawAmount());
+                countOfWithdraw++;
+                //totalAmountWithdraw += atm.getWithdrawAmount();
+                setTotalAmountWithdraw(getTotalAmountWithdraw()+atm.getWithdrawAmount());
                 break;
             case 3: //transfer operation
                 System.out.println("Write the amount to transfer: ");
                 atm.setTransferAmount(scanner.nextDouble());
                 System.out.println("Write the phone number to who you want to transfer money");
                 String numberPhone = scanner.next();
-                System.out.println(atm.getTransferAmount() + " Transfer successful on "+ numberPhone);
+                System.out.println(atm.getTransferAmount() +" $"+ " Transfer successful on "+ numberPhone);
                 atm.setBalance(atm.getBalance() - atm.getTransferAmount());
+                countOfTransfer++;
+                //totalAmountTransfer += atm.getTransferAmount();
+                setTotalAmountTransfer(getTotalAmountTransfer()+atm.getTransferAmount());
+                break;
             case 4:
                 // ничего не прописывается поскольку у нас цикл while
                 break;
